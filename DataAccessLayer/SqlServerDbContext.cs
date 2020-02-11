@@ -1,18 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
 using GisApi.DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace GisApi.DataAccessLayer
 {
-    public class SqlServerDbContext : DbContext
+    public class SqlServerDbContext : DbContext, IDbContext
     {
-        public IConfiguration Configuration { get; set; }
+        public IConfiguration Configuration { get; }
 
         public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<Way> Ways { get; set; }
+
+        public SqlServerDbContext(IConfiguration configuration) : base()
+        {
+            this.Configuration = configuration;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

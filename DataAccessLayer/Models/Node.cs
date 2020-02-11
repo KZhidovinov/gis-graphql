@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using System.Collections.Generic;
 
 namespace GisApi.DataAccessLayer.Models
 {
