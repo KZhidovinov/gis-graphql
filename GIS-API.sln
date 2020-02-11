@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer", "ApiServer\ApiServer.csproj", "{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{8D93DA3A-2904-4639-8EBD-E944B095E819}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D93DA3A-2904-4639-8EBD-E944B095E819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D93DA3A-2904-4639-8EBD-E944B095E819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D93DA3A-2904-4639-8EBD-E944B095E819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D93DA3A-2904-4639-8EBD-E944B095E819}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D991F853-728C-456D-95F1-A92E7ED4DAF6}
+	EndGlobalSection
+EndGlobal
