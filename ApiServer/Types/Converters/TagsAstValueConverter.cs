@@ -1,6 +1,6 @@
-﻿using GraphQL.Language.AST;
+﻿using GisApi.ApiServer.Types.ValueNodes;
+using GraphQL.Language.AST;
 using GraphQL.Types;
-using System;
 
 namespace GisApi.ApiServer.Types.Converters
 {
@@ -8,12 +8,12 @@ namespace GisApi.ApiServer.Types.Converters
     {
         public IValue Convert(object value, IGraphType type)
         {
-            throw new NotImplementedException();
+            return new TagsValue((Tags)value);
         }
 
         public bool Matches(object value, IGraphType type)
         {
-            throw new NotImplementedException();
+            return value is Tags;
         }
     }
 }
