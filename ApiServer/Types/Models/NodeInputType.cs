@@ -8,6 +8,7 @@ namespace GisApi.ApiServer.Types.Models
         {
             Name = "NodeInput";
             Field<NonNullGraphType<LongGraphType>>("osmId");
+            Field<TagsType>("tags");
         }
     }
 }

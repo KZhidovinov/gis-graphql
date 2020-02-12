@@ -1,5 +1,6 @@
 using GisApi.ApiServer.Middleware;
 using GisApi.ApiServer.Types;
+using GisApi.ApiServer.Types.Models;
 using GisApi.DataAccessLayer;
 using GraphiQl;
 using GraphQL;
@@ -27,6 +28,8 @@ namespace ApiServer
         {
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+
+            services.AddSingleton<TagsType>();
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<IDbContext, SqlServerDbContext>(opts => opts
