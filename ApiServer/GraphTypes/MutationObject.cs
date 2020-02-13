@@ -1,13 +1,14 @@
-﻿using GisApi.ApiServer.Types.Models;
+﻿using GisApi.ApiServer.GraphTypes.Models;
 using GisApi.DataAccessLayer;
 using GisApi.DataAccessLayer.Models;
+using GraphQL;
 using GraphQL.Types;
 
-namespace GisApi.ApiServer.Types
+namespace GisApi.ApiServer.GraphTypes
 {
-    public class NodeMutation : ObjectGraphType
+    public class MutationObject : ObjectGraphType
     {
-        public NodeMutation(IDbContext dbContext)
+        public MutationObject(IDbContext dbContext)
         {
             Field<NodeType>(
                 "createNode",

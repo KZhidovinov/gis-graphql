@@ -1,9 +1,9 @@
-using GisApi.ApiServer.Types.ValueNodes;
+using GisApi.ApiServer.GraphTypes.Scalars.ValueNodes;
 using GraphQL;
 using GraphQL.Language.AST;
 using GraphQL.Types;
 
-namespace GisApi.ApiServer.Types.Models
+namespace GisApi.ApiServer.GraphTypes.Scalars
 {
     public class TagsType : ScalarGraphType
     {

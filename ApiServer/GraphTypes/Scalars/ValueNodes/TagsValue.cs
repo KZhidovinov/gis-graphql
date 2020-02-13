@@ -1,6 +1,6 @@
 ﻿using GraphQL.Language.AST;
 
-namespace GisApi.ApiServer.Types.ValueNodes
+namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
 {
     public class TagsValue : ValueNode<Tags>
     {

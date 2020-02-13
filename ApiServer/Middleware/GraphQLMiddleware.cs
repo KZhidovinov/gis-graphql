@@ -1,5 +1,5 @@
 ﻿using GraphQL;
-using GraphQL.Http;
+using GraphQL.NewtonsoftJson;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -40,6 +40,7 @@ namespace GisApi.ApiServer.Middleware
                         doc.Schema = schema;
                         doc.Query = request.Query;
                         doc.Inputs = request.Variables.ToInputs();
+                        doc.ExposeExceptions = true;
                     }).ConfigureAwait(false);
 
                     var json = await _writer.WriteToStringAsync(result);

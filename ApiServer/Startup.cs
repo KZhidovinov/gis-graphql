@@ -1,16 +1,18 @@
+using GisApi.ApiServer.GraphTypes;
+using GisApi.ApiServer.GraphTypes.Scalars;
 using GisApi.ApiServer.Middleware;
-using GisApi.ApiServer.Types;
-using GisApi.ApiServer.Types.Models;
 using GisApi.DataAccessLayer;
 using GraphiQl;
 using GraphQL;
-using GraphQL.Http;
+using GraphQL.NewtonsoftJson;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
 
 namespace ApiServer
 {
@@ -28,6 +30,7 @@ namespace ApiServer
         {
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 4326));
 
             services.AddSingleton<TagsType>();
 
@@ -36,9 +39,9 @@ namespace ApiServer
                      .UseSqlServer(this.Configuration.GetConnectionString("gis_api"),
                          x => x.UseNetTopologySuite()));
 
-            services.AddTransient<NodeQuery>();
-            services.AddTransient<NodeMutation>();
-            services.AddTransient<ISchema, NodeSchema>();
+            services.AddTransient<QueryObject>();
+            services.AddTransient<MutationObject>();
+            services.AddTransient<ISchema, AppSchema>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
