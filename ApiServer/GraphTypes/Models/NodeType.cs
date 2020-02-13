@@ -14,6 +14,8 @@ namespace GisApi.ApiServer.GraphTypes.Models
             Field(x => x.OsmId, type: typeof(LongGraphType)).Description("The OSM ID of the Node.");
             Field(x => x.Tags, type: typeof(TagsType)).Description("Tags of the Node.");
             Field(x => x.Location, type: typeof(PointType)).Description("Location of the Node.");
+
+            Field(x => x.WayNodes, type: typeof(ListGraphType<WayNodeType>)).Description("List of WayNode objects");
         }
     }
 }

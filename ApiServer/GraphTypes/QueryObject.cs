@@ -28,6 +28,14 @@ namespace GisApi.ApiServer.GraphTypes
                     var nodes = dbContext.Nodes.AsNoTracking().ToList();
                     return nodes;
                 });
+
+            Field<ListGraphType<WayType>>(
+                "ways",
+                resolve: context =>
+                {
+                    var ways = dbContext.Ways.AsNoTracking().ToList();
+                    return ways;
+                });
         }
     }
 }

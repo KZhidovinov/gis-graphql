@@ -7,5 +7,7 @@ namespace GisApi.DataAccessLayer
     {
         DbSet<Node> Nodes { get; set; }
         DbSet<Way> Ways { get; set; }
+
+        void SaveChanges();
     }
 }

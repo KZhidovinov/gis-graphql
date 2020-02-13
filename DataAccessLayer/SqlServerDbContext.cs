@@ -65,5 +65,10 @@ namespace GisApi.DataAccessLayer
             });
         }
 
+        void IDbContext.SaveChanges()
+        {
+            this.SaveChanges();
+        }
+
     }
 }

@@ -40,7 +40,7 @@ namespace GisApi.ApiServer.Middleware
                         doc.Schema = schema;
                         doc.Query = request.Query;
                         doc.Inputs = request.Variables.ToInputs();
-                        doc.ExposeExceptions = true;
+                        //doc.ExposeExceptions = true;
                     }).ConfigureAwait(false);
 
                     var json = await _writer.WriteToStringAsync(result);

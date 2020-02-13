@@ -3,14 +3,15 @@ using GraphQL.Types;
 
 namespace GisApi.ApiServer.GraphTypes.Models
 {
-    public class NodeInputType : InputObjectGraphType
+    public class WayInputType : InputObjectGraphType
     {
-        public NodeInputType()
+        public WayInputType()
         {
-            Name = "NodeInput";
+            Name = "WayInput";
             Field<LongGraphType>("osmId");
             Field<TagsType>("tags");
-            Field<PointType>("location");
+
+            Field<ListGraphType<WayNodeInputType>>("wayNodes");
         }
     }
 }
