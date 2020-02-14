@@ -77,7 +77,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("NodeId");
 
-                    b.ToTable("WayNode");
+                    b.ToTable("WayNodes");
                 });
 
             modelBuilder.Entity("GisApi.DataAccessLayer.Models.WayNode", b =>

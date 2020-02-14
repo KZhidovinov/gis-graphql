@@ -31,6 +31,17 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        },
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/ApiServer/bin/Debug/netcoreapp3.1/ApiServer.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/ApiServer",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         }
     ]
 }

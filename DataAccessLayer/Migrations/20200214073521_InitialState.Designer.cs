@@ -10,7 +10,7 @@ using NetTopologySuite.Geometries;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20200210084915_InitialState")]
+    [Migration("20200214073521_InitialState")]
     partial class InitialState
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("NodeId");
 
-                    b.ToTable("WayNode");
+                    b.ToTable("WayNodes");
                 });
 
             modelBuilder.Entity("GisApi.DataAccessLayer.Models.WayNode", b =>

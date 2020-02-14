@@ -12,6 +12,9 @@ namespace GisApi.DataAccessLayer
 
         public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<Way> Ways { get; set; }
+        public virtual DbSet<WayNode> WayNodes { get; set; }
+
+        public SqlServerDbContext() : base() { }
 
         public SqlServerDbContext(IConfiguration configuration) : base()
         {
@@ -22,7 +25,7 @@ namespace GisApi.DataAccessLayer
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(this.Configuration.GetConnectionString("gis_api"),
+                optionsBuilder.UseSqlServer("server=.\\mssql2017;database=gis_api;uid=sa;pwd=1;",
                     x => x.UseNetTopologySuite());
             }
         }
@@ -38,6 +41,8 @@ namespace GisApi.DataAccessLayer
                     );
                 b.Property(e => e.Location)
                     .HasColumnType("geometry");
+
+                b.HasMany(e => e.WayNodes).WithOne();
             });
 
 
@@ -48,6 +53,7 @@ namespace GisApi.DataAccessLayer
                         v => JsonSerializer.Serialize(v, new JsonSerializerOptions { IgnoreNullValues = true }),
                         v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, new JsonSerializerOptions { IgnoreNullValues = true })
                     );
+                b.HasMany(e => e.WayNodes).WithOne();
             });
 
             modelBuilder.Entity<WayNode>(b =>

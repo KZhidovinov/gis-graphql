@@ -37,7 +37,7 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WayNode",
+                name: "WayNodes",
                 columns: table => new
                 {
                     WayId = table.Column<long>(nullable: false),
@@ -47,16 +47,16 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WayNode", x => new { x.WayId, x.NodeId })
+                    table.PrimaryKey("PK_WayNodes", x => new { x.WayId, x.NodeId })
                         .Annotation("SqlServer:Clustered", true);
                     table.ForeignKey(
-                        name: "FK_WayNode_Nodes_NodeId",
+                        name: "FK_WayNodes_Nodes_NodeId",
                         column: x => x.NodeId,
                         principalTable: "Nodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WayNode_Ways_WayId",
+                        name: "FK_WayNodes_Ways_WayId",
                         column: x => x.WayId,
                         principalTable: "Ways",
                         principalColumn: "Id",
@@ -64,15 +64,15 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_WayNode_NodeId",
-                table: "WayNode",
+                name: "IX_WayNodes_NodeId",
+                table: "WayNodes",
                 column: "NodeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "WayNode");
+                name: "WayNodes");
 
             migrationBuilder.DropTable(
                 name: "Nodes");

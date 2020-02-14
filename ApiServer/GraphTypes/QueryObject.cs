@@ -33,7 +33,12 @@ namespace GisApi.ApiServer.GraphTypes
                 "ways",
                 resolve: context =>
                 {
-                    var ways = dbContext.Ways.AsNoTracking().ToList();
+                    var ways = dbContext.Ways
+                        .Include(w => w.WayNodes)
+                        .ThenInclude(wn => wn.Node)
+                        .AsNoTracking()
+                        .ToList();
+                        
                     return ways;
                 });
         }
