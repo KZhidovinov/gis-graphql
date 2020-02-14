@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
 
 namespace ApiServer
 {

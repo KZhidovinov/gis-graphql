@@ -13,7 +13,7 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OsmId = table.Column<long>(nullable: false),
+                    OsmId = table.Column<long>(nullable: true),
                     Tags = table.Column<string>(nullable: true),
                     Location = table.Column<Point>(type: "geometry", nullable: true)
                 },
@@ -28,7 +28,7 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OsmId = table.Column<long>(nullable: false),
+                    OsmId = table.Column<long>(nullable: true),
                     Tags = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

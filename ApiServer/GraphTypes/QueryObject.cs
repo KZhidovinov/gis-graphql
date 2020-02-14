@@ -21,7 +21,7 @@ namespace GisApi.ApiServer.GraphTypes
                     return node;
                 });
 
-            Field<ListGraphType<NodeType>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<NodeType>>>>(
                 "nodes",
                 resolve: context =>
                 {
@@ -29,7 +29,7 @@ namespace GisApi.ApiServer.GraphTypes
                     return nodes;
                 });
 
-            Field<ListGraphType<WayType>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>>(
                 "ways",
                 resolve: context =>
                 {
@@ -38,7 +38,7 @@ namespace GisApi.ApiServer.GraphTypes
                         .ThenInclude(wn => wn.Node)
                         .AsNoTracking()
                         .ToList();
-                        
+
                     return ways;
                 });
         }
