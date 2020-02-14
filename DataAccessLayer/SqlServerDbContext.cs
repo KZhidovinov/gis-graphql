@@ -1,6 +1,7 @@
 using GisApi.DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -15,6 +16,11 @@ namespace GisApi.DataAccessLayer
         public virtual DbSet<WayNode> WayNodes { get; set; }
 
         public SqlServerDbContext() : base() { }
+        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options, IConfiguration configuration)
+            : base(options)
+        {
+            Configuration = configuration;
+        }
 
         public SqlServerDbContext(IConfiguration configuration) : base()
         {
@@ -25,8 +31,8 @@ namespace GisApi.DataAccessLayer
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("server=.\\mssql2017;database=gis_api;uid=sa;pwd=1;",
-                    x => x.UseNetTopologySuite());
+                var connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_gis_api");
+                optionsBuilder.UseSqlServer(connectionString, x => x.UseNetTopologySuite());
             }
         }
 

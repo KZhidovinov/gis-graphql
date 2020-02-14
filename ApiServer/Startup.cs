@@ -34,9 +34,7 @@ namespace ApiServer
             services.AddSingleton<TagsType>();
 
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<IDbContext, SqlServerDbContext>(opts => opts
-                     .UseSqlServer(this.Configuration.GetConnectionString("gis_api"),
-                         x => x.UseNetTopologySuite()));
+                .AddDbContext<IDbContext, SqlServerDbContext>();
 
             services.AddTransient<QueryObject>();
             services.AddTransient<MutationObject>();
