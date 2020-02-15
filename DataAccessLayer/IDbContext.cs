@@ -1,8 +1,8 @@
-﻿using GisApi.DataAccessLayer.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace GisApi.DataAccessLayer
+﻿namespace GisApi.DataAccessLayer
 {
+    using GisApi.DataAccessLayer.Models;
+    using Microsoft.EntityFrameworkCore;
+
     public interface IDbContext
     {
         DbSet<Node> Nodes { get; set; }

@@ -1,15 +1,15 @@
-﻿using GraphQL.Language.AST;
-
-namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
+﻿namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
 {
-    public class TagsValue : ValueNode<Tags>
+    using GraphQL.Language.AST;
+
+    public class TagsValue : ValueNode<TagsDictionary>
     {
-        public TagsValue(Tags value)
+        public TagsValue(TagsDictionary value)
         {
             Value = value;
         }
 
-        protected override bool Equals(ValueNode<Tags> node)
+        protected override bool Equals(ValueNode<TagsDictionary> node)
         {
             return Value.Equals(node.Value);
         }

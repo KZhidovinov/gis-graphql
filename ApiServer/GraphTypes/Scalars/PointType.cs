@@ -1,10 +1,10 @@
-﻿using GisApi.ApiServer.GeoJSON;
-using GraphQL;
-using GraphQL.Language.AST;
-using GraphQL.Types;
-
-namespace GisApi.ApiServer.GraphTypes.Scalars
+﻿namespace GisApi.ApiServer.GraphTypes.Scalars
 {
+    using GisApi.ApiServer.GeoJSON;
+    using GraphQL;
+    using GraphQL.Language.AST;
+    using GraphQL.Types;
+
     public class PointType : ScalarGraphType
     {
         public PointType() => Name = "Point";

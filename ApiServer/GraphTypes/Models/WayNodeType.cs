@@ -1,8 +1,8 @@
-using GisApi.DataAccessLayer.Models;
-using GraphQL.Types;
-
 namespace GisApi.ApiServer.GraphTypes.Models
 {
+    using GisApi.DataAccessLayer.Models;
+    using GraphQL.Types;
+
     public class WayNodeType : ObjectGraphType<WayNode>
     {
         public WayNodeType()

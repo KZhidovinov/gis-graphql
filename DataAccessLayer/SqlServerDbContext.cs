@@ -1,12 +1,11 @@
-using GisApi.DataAccessLayer.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
-
-namespace GisApi.DataAccessLayer
+﻿namespace GisApi.DataAccessLayer
 {
+    using System.Collections.Generic;
+    using System.Text.Json;
+    using GisApi.DataAccessLayer.Models;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+
     public class SqlServerDbContext : DbContext, IDbContext
     {
         public IConfiguration Configuration { get; }
@@ -31,7 +30,7 @@ namespace GisApi.DataAccessLayer
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_gis_api");
+                var connectionString = Configuration.GetConnectionString("gis_api");
                 optionsBuilder.UseSqlServer(connectionString, x => x.UseNetTopologySuite());
             }
         }

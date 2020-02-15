@@ -1,8 +1,8 @@
-﻿using GisApi.ApiServer.GraphTypes.Scalars;
-using GraphQL.Types;
-
-namespace GisApi.ApiServer.GraphTypes.Models
+﻿namespace GisApi.ApiServer.GraphTypes.Models
 {
+    using GisApi.ApiServer.GraphTypes.Scalars;
+    using GraphQL.Types;
+
     public class NodeInputType : InputObjectGraphType
     {
         public NodeInputType()

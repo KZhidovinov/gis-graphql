@@ -1,13 +1,13 @@
-﻿using GisApi.ApiServer.GraphTypes.Scalars.Converters;
-using GraphQL;
-using GraphQL.Types;
-using NetTopologySuite.Geometries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace GisApi.ApiServer.GraphTypes
+﻿namespace GisApi.ApiServer.GraphTypes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using GisApi.ApiServer.GraphTypes.Scalars.Converters;
+    using GraphQL;
+    using GraphQL.Types;
+    using NetTopologySuite.Geometries;
+
     public class AppSchema : Schema
     {
         private readonly GeometryFactory geometryFactory;
@@ -17,8 +17,8 @@ namespace GisApi.ApiServer.GraphTypes
             this.geometryFactory = geometryFactory;
 
             // Tags converters
-            ValueConverter.Register(typeof(Dictionary<string, string>), typeof(Tags), ParseTags<string>);
-            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(Tags), ParseTags<object>);
+            ValueConverter.Register(typeof(Dictionary<string, string>), typeof(TagsDictionary), DictToTags<string>);
+            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(TagsDictionary), DictToTags<object>);
             this.RegisterValueConverter(new TagsAstValueConverter());
 
             // Geometry.Point converters
@@ -41,11 +41,11 @@ namespace GisApi.ApiServer.GraphTypes
             return null;
         }
 
-        private object ParseTags<T>(object tagsInput)
+        private object DictToTags<TSourceValue>(object tagsInput)
         {
-            if (tagsInput is IDictionary<string, T> dict)
+            if (tagsInput is IDictionary<string, TSourceValue> dict)
             {
-                return new Tags(dict.Select(pair =>
+                return new TagsDictionary(dict.Select(pair =>
                     new KeyValuePair<string, string>(pair.Key, pair.Value.ToString())));
             }
 
@@ -57,7 +57,7 @@ namespace GisApi.ApiServer.GraphTypes
             if (pointInput is Point pt)
                 return new GeoJSON.Point
                 {
-                    Coordinates = new double[] { pt.Coordinates[0].X, pt.Coordinates[0].Y }
+                    Coordinates = new List<double> { pt.Coordinates[0].X, pt.Coordinates[0].Y }
                 };
 
             return null;

@@ -1,20 +1,19 @@
-using GisApi.ApiServer.GraphTypes;
-using GisApi.ApiServer.GraphTypes.Scalars;
-using GisApi.ApiServer.Middleware;
-using GisApi.DataAccessLayer;
-using GraphiQl;
-using GraphQL;
-using GraphQL.NewtonsoftJson;
-using GraphQL.Types;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using NetTopologySuite.Geometries;
-
-namespace ApiServer
+﻿namespace GisApi.ApiServer
 {
+    using GisApi.ApiServer.GraphTypes;
+    using GisApi.ApiServer.GraphTypes.Scalars;
+    using GisApi.ApiServer.Middleware;
+    using GisApi.DataAccessLayer;
+    using GraphiQl;
+    using GraphQL;
+    using GraphQL.NewtonsoftJson;
+    using GraphQL.Types;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using NetTopologySuite.Geometries;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -39,6 +38,7 @@ namespace ApiServer
             services.AddTransient<QueryObject>();
             services.AddTransient<MutationObject>();
             services.AddTransient<ISchema, AppSchema>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

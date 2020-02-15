@@ -1,15 +1,15 @@
-﻿using GraphQL;
-using GraphQL.NewtonsoftJson;
-using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace GisApi.ApiServer.Middleware
+﻿namespace GisApi.ApiServer.Middleware
 {
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+    using GraphQL;
+    using GraphQL.NewtonsoftJson;
+    using GraphQL.Types;
+    using Microsoft.AspNetCore.Http;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     public class GraphQLMiddleware
     {
         private readonly RequestDelegate _next;
@@ -25,13 +25,13 @@ namespace GisApi.ApiServer.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext, ISchema schema)
         {
-            if (httpContext.Request.Path.StartsWithSegments("/graphql")
+            if (httpContext.Request.Path.StartsWithSegments("/graphql", StringComparison.InvariantCultureIgnoreCase)
                 && string.Equals(httpContext.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
             {
                 string body;
                 using (var streamReader = new StreamReader(httpContext.Request.Body))
                 {
-                    body = await streamReader.ReadToEndAsync();
+                    body = await streamReader.ReadToEndAsync().ConfigureAwait(false);
 
                     var request = JsonConvert.DeserializeObject<GraphQLRequest>(body);
 
@@ -43,13 +43,13 @@ namespace GisApi.ApiServer.Middleware
                         //doc.ExposeExceptions = true;
                     }).ConfigureAwait(false);
 
-                    var json = await _writer.WriteToStringAsync(result);
-                    await httpContext.Response.WriteAsync(json);
+                    var json = await _writer.WriteToStringAsync(result).ConfigureAwait(false);
+                    await httpContext.Response.WriteAsync(json).ConfigureAwait(false);
                 }
             }
             else
             {
-                await _next(httpContext);
+                await _next(httpContext).ConfigureAwait(false);
             }
         }
     }

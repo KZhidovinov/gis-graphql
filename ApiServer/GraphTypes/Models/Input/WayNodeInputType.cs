@@ -1,7 +1,7 @@
-﻿using GraphQL.Types;
-
-namespace GisApi.ApiServer.GraphTypes.Models
+﻿namespace GisApi.ApiServer.GraphTypes.Models
 {
+    using GraphQL.Types;
+
     public class WayNodeInputType : InputObjectGraphType
     {
         public WayNodeInputType()

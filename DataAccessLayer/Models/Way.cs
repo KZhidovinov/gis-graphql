@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace GisApi.DataAccessLayer.Models
 {
+    using System.Collections.Generic;
+
     public class Way
     {
         public long Id { get; set; }

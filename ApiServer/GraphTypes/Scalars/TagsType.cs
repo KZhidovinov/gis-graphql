@@ -1,10 +1,10 @@
-using GisApi.ApiServer.GraphTypes.Scalars.ValueNodes;
-using GraphQL;
-using GraphQL.Language.AST;
-using GraphQL.Types;
-
 namespace GisApi.ApiServer.GraphTypes.Scalars
 {
+    using GisApi.ApiServer.GraphTypes.Scalars.ValueNodes;
+    using GraphQL;
+    using GraphQL.Language.AST;
+    using GraphQL.Types;
+
     public class TagsType : ScalarGraphType
     {
         public TagsType() => Name = "Tags";
@@ -22,12 +22,12 @@ namespace GisApi.ApiServer.GraphTypes.Scalars
 
         public override object ParseValue(object value)
         {
-            return ValueConverter.ConvertTo(value, typeof(Tags));
+            return ValueConverter.ConvertTo(value, typeof(TagsDictionary));
         }
 
         public override object Serialize(object value)
         {
-            return ValueConverter.ConvertTo(value, typeof(Tags));
+            return ValueConverter.ConvertTo(value, typeof(TagsDictionary));
         }
     }
 }

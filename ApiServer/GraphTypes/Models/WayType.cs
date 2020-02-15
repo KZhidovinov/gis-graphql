@@ -1,10 +1,10 @@
-using GisApi.ApiServer.GraphTypes.Scalars;
-using GisApi.DataAccessLayer.Models;
-using GraphQL.Types;
-using System.Linq;
-
 namespace GisApi.ApiServer.GraphTypes.Models
 {
+    using System.Linq;
+    using GisApi.ApiServer.GraphTypes.Scalars;
+    using GisApi.DataAccessLayer.Models;
+    using GraphQL.Types;
+
     public class WayType : ObjectGraphType<Way>
     {
         public WayType()

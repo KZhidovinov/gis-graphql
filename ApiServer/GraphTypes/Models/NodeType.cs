@@ -1,9 +1,9 @@
-using GisApi.ApiServer.GraphTypes.Scalars;
-using GisApi.DataAccessLayer.Models;
-using GraphQL.Types;
-
 namespace GisApi.ApiServer.GraphTypes.Models
 {
+    using GisApi.ApiServer.GraphTypes.Scalars;
+    using GisApi.DataAccessLayer.Models;
+    using GraphQL.Types;
+
     public class NodeType : ObjectGraphType<Node>
     {
         public NodeType()

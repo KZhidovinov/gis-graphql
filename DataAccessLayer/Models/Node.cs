@@ -1,8 +1,8 @@
-using NetTopologySuite.Geometries;
-using System.Collections.Generic;
-
 namespace GisApi.DataAccessLayer.Models
 {
+    using System.Collections.Generic;
+    using NetTopologySuite.Geometries;
+
     public class Node
     {
         public long Id { get; set; }

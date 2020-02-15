@@ -1,8 +1,8 @@
-﻿using GraphQL.Language.AST;
-using NetTopologySuite.Geometries;
-
-namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
+﻿namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
 {
+    using GraphQL.Language.AST;
+    using NetTopologySuite.Geometries;
+
     public class PointValue : ValueNode<Point>
     {
         public PointValue(Point value)

@@ -1,12 +1,12 @@
-﻿using GisApi.ApiServer.GraphTypes.Models;
-using GisApi.DataAccessLayer;
-using GisApi.DataAccessLayer.Models;
-using GraphQL;
-using GraphQL.Types;
-using System.Collections.Generic;
-
-namespace GisApi.ApiServer.GraphTypes
+﻿namespace GisApi.ApiServer.GraphTypes
 {
+    using System.Collections.Generic;
+    using GisApi.ApiServer.GraphTypes.Models;
+    using GisApi.DataAccessLayer;
+    using GisApi.DataAccessLayer.Models;
+    using GraphQL;
+    using GraphQL.Types;
+
     public class MutationObject : ObjectGraphType
     {
         public MutationObject(IDbContext dbContext)

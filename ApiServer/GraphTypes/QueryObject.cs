@@ -1,12 +1,12 @@
-﻿using GisApi.ApiServer.GraphTypes.Models;
-using GisApi.DataAccessLayer;
-using GraphQL;
-using GraphQL.Types;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-
-namespace GisApi.ApiServer.GraphTypes
+﻿namespace GisApi.ApiServer.GraphTypes
 {
+    using System.Linq;
+    using GisApi.ApiServer.GraphTypes.Models;
+    using GisApi.DataAccessLayer;
+    using GraphQL;
+    using GraphQL.Types;
+    using Microsoft.EntityFrameworkCore;
+
     public class QueryObject : ObjectGraphType
     {
         public QueryObject(IDbContext dbContext)
