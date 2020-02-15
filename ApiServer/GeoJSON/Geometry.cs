@@ -3,12 +3,12 @@
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
-    public class Point
+    public class Geometry
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        public string GeometryType => "Point";
+        public string GeometryType { get; set; }
 
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        public List<double> Coordinates { get; set; }
+        public List<object> Coordinates { get; set; }
     }
 }

@@ -14,7 +14,7 @@
 
             Field<TagsType>("tags", "Node tags as JSON object");
 
-            Field<PointType>("location", "Location of Node as GeoJSON Point");
+            Field<GeometryType>("location", "Location of Node as GeoJSON Point");
         }
     }
 }

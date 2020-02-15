@@ -19,7 +19,7 @@ namespace GisApi.ApiServer.GraphTypes.Models
             Field(x => x.Tags, type: typeof(TagsType))
                 .Description("Tags of the Node.");
 
-            Field(x => x.Location, type: typeof(PointType))
+            Field(x => x.Location, type: typeof(GeometryType))
                 .Description("Location of the Node.");
 
             Field(x => x.WayNodes, type: typeof(ListGraphType<WayNodeType>))

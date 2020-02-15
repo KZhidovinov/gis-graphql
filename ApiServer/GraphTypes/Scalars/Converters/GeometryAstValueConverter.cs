@@ -5,11 +5,11 @@
     using GraphQL.Types;
     using NetTopologySuite.Geometries;
 
-    public class PointAstValueConverter : IAstFromValueConverter
+    public class GeometryAstValueConverter : IAstFromValueConverter
     {
         public IValue Convert(object value, IGraphType type)
         {
-            return new PointValue((Point)value);
+            return new GeometryValue((Point)value);
         }
 
         public bool Matches(object value, IGraphType type)

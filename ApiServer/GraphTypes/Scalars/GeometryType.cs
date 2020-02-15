@@ -5,9 +5,9 @@
     using GraphQL.Language.AST;
     using GraphQL.Types;
 
-    public class PointType : ScalarGraphType
+    public class GeometryType : ScalarGraphType
     {
-        public PointType() => Name = "Point";
+        public GeometryType() => Name = "Geometry";
 
         public override object ParseLiteral(IValue value)
         {
@@ -16,12 +16,12 @@
 
         public override object ParseValue(object value)
         {
-            return ValueConverter.ConvertTo(value, typeof(Point));
+            return ValueConverter.ConvertTo(value, typeof(Geometry));
         }
 
         public override object Serialize(object value)
         {
-            return ValueConverter.ConvertTo(value, typeof(Point));
+            return ValueConverter.ConvertTo(value, typeof(Geometry));
         }
     }
 }

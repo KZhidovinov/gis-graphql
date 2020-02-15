@@ -22,23 +22,13 @@
             this.RegisterValueConverter(new TagsAstValueConverter());
 
             // Geometry.Point converters
-            ValueConverter.Register(typeof(Point), typeof(GeoJSON.Point), PointToGeoJSON);
-            ValueConverter.Register(typeof(GeoJSON.Point), typeof(Point), GeoJSONToPoint);
-            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(GeoJSON.Point), DictToPoint);
-            this.RegisterValueConverter(new PointAstValueConverter());
+            ValueConverter.Register(typeof(Point), typeof(GeoJSON.Geometry), GeometryToGeoJSON);
+            ValueConverter.Register(typeof(GeoJSON.Geometry), typeof(Point), GeoJSONToGeometry);
+            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(GeoJSON.Geometry), DictToGeometry);
+            this.RegisterValueConverter(new GeometryAstValueConverter());
 
             Query = query;
             Mutation = mutation;
-        }
-
-        private object GeoJSONToPoint(object geoJsonInput)
-        {
-            if (geoJsonInput is GeoJSON.Point pt)
-            {
-                return geometryFactory.CreatePoint(new Coordinate(pt.Coordinates[0], pt.Coordinates[1]));
-            }
-
-            return null;
         }
 
         private object DictToTags<TSourceValue>(object tagsInput)
@@ -52,26 +42,58 @@
             return null;
         }
 
-        private object PointToGeoJSON(object pointInput)
+        private object GeoJSONToGeometry(object geoJsonInput)
         {
-            if (pointInput is Point pt)
-                return new GeoJSON.Point
+            if ((geoJsonInput is GeoJSON.Geometry geom)
+                && Enum.TryParse<OgcGeometryType>(geom.GeometryType, true, out OgcGeometryType geometryType))
+            {
+                switch (geometryType)
                 {
-                    Coordinates = new List<double> { pt.Coordinates[0].X, pt.Coordinates[0].Y }
-                };
+                    case OgcGeometryType.Point:
+                        return geometryFactory.CreatePoint(
+                            new Coordinate(Convert.ToDouble(geom.Coordinates[0]),
+                                           Convert.ToDouble(geom.Coordinates[1])));
+                }
+
+            }
 
             return null;
         }
 
-        private object DictToPoint(object pointInput)
+        private object GeometryToGeoJSON(object geoInput)
         {
-            if (pointInput is Dictionary<string, object> dict)
+            if (geoInput is Geometry geom)
             {
-                var coords = dict["coordinates"] as IList<object>;
+                switch (geom.OgcGeometryType)
+                {
+                    case OgcGeometryType.Point:
+                        return new GeoJSON.Geometry
+                        {
+                            GeometryType = geom.GeometryType,
+                            Coordinates = new List<object> { geom.Coordinates[0].X, geom.Coordinates[0].Y }
+                        };
+                    default:
+                        return null;
+                }
+            }
 
-                return geometryFactory.CreatePoint(
-                    new Coordinate(Convert.ToDouble(coords[0]),
-                                   Convert.ToDouble(coords[1])));
+            return null;
+        }
+
+        private object DictToGeometry(object pointInput)
+        {
+            if ((pointInput is Dictionary<string, object> dict)
+                && Enum.TryParse<OgcGeometryType>(dict["type"].ToString(), true, out OgcGeometryType geometryType))
+            {
+                switch (geometryType)
+                {
+                    case OgcGeometryType.Point:
+                        var coords = dict["coordinates"] as IList<object>;
+
+                        return geometryFactory.CreatePoint(
+                            new Coordinate(Convert.ToDouble(coords[0]),
+                                           Convert.ToDouble(coords[1])));
+                }
             }
 
             return null;

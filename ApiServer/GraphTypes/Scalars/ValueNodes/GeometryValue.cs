@@ -3,9 +3,9 @@
     using GraphQL.Language.AST;
     using NetTopologySuite.Geometries;
 
-    public class PointValue : ValueNode<Point>
+    public class GeometryValue : ValueNode<Point>
     {
-        public PointValue(Point value)
+        public GeometryValue(Point value)
         {
             Value = value;
         }
