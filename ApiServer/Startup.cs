@@ -32,8 +32,7 @@
 
             services.AddSingleton<TagsType>();
 
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<IDbContext, SqlServerDbContext>();
+            services.AddDbContext<IDbContext, SqlServerDbContext>();
 
             services.AddTransient<QueryObject>();
             services.AddTransient<MutationObject>();

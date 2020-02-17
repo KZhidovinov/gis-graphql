@@ -1,6 +1,7 @@
 ﻿namespace GisApi.ApiServer.GraphTypes.Scalars.Converters
 {
     using GisApi.ApiServer.GraphTypes.Scalars.ValueNodes;
+    using GisApi.DataAccessLayer.Models;
     using GraphQL.Language.AST;
     using GraphQL.Types;
 

@@ -11,7 +11,7 @@
     {
         public QueryObject(IDbContext dbContext)
         {
-            Field<NodeType>(
+            this.Field<NodeType>(
                 "node",
                 arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "The ID of the Node." }),
                 resolve: context =>
@@ -21,7 +21,7 @@
                     return node;
                 });
 
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<NodeType>>>>(
+            this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<NodeType>>>>(
                 "nodes",
                 resolve: context =>
                 {
@@ -29,7 +29,7 @@
                     return nodes;
                 });
 
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>>(
+            this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>>(
                 "ways",
                 resolve: context =>
                 {

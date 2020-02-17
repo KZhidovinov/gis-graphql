@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes
+namespace GisApi.ApiServer.GraphTypes
 {
     using System.Collections.Generic;
     using GisApi.ApiServer.GraphTypes.Models;
@@ -11,10 +11,10 @@
     {
         public MutationObject(IDbContext dbContext)
         {
-            Field<NodeType>(
+            this.Field<NodeType>(
                 "createNode",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<NodeInputType>> { Name = "item" }),
+                new QueryArgument<NonNullGraphType<NodeInputType>> { Name = "item" }),
                 resolve: context =>
                 {
                     var node = context.GetArgument<Node>("item");
@@ -23,12 +23,12 @@
                     return node;
                 });
 
-            Field<ListGraphType<WayType>>(
+            this.Field<ListGraphType<WayType>>(
                 "way",
                 arguments: new QueryArguments(
-                    new QueryArgument<
-                        NonNullGraphType<ListGraphType<NonNullGraphType<WayInputType>>>>
-                    { Name = "items", Description = "List of new ways" }
+                new QueryArgument<
+                NonNullGraphType<ListGraphType<NonNullGraphType<WayInputType>>>>
+                { Name = "items", Description = "List of new ways" }
                 ),
                 resolve: context =>
                 {

@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes
+﻿namespace GisApi.DataAccessLayer.Models
 {
     using System.Collections.Generic;
 

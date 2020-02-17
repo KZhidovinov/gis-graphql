@@ -1,9 +1,10 @@
-﻿namespace GisApi.ApiServer.GraphTypes
+namespace GisApi.ApiServer.GraphTypes
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using GisApi.ApiServer.GraphTypes.Scalars.Converters;
+    using GisApi.DataAccessLayer.Models;
     using GraphQL;
     using GraphQL.Types;
     using NetTopologySuite.Geometries;

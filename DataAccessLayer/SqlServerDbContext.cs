@@ -1,9 +1,11 @@
 ﻿namespace GisApi.DataAccessLayer
 {
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Text.Json;
     using GisApi.DataAccessLayer.Models;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
     using Microsoft.Extensions.Configuration;
 
     public class SqlServerDbContext : DbContext, IDbContext
@@ -18,7 +20,7 @@
         public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options, IConfiguration configuration)
             : base(options)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public SqlServerDbContext(IConfiguration configuration) : base()
@@ -30,23 +32,30 @@
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = Configuration.GetConnectionString("gis_api");
+                var connectionString = this.Configuration.GetConnectionString("gis_api");
                 optionsBuilder.UseSqlServer(connectionString, x => x.UseNetTopologySuite());
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var tagsConverter = new ValueConverter<TagsDictionary, string>(
+                v => JsonSerializer.Serialize(v, new JsonSerializerOptions { IgnoreNullValues = true }),
+                v => JsonSerializer.Deserialize<TagsDictionary>(v, new JsonSerializerOptions { IgnoreNullValues = true }));
+
+            var tagsComparer = new ValueComparer<TagsDictionary>(
+                (t1, t2) =>
+                    t1.All(p => t2.ContainsKey(p.Key) && p.Value.Equals(t2[p.Key])) &&
+                    t2.All(p => t1.ContainsKey(p.Key) && p.Value.Equals(t1[p.Key])),
+                tags => tags.GetHashCode());
+
             modelBuilder.Entity<Node>(b =>
             {
                 b.Property(e => e.Tags)
-                    .HasConversion(
-                        v => JsonSerializer.Serialize(v, new JsonSerializerOptions { IgnoreNullValues = true }),
-                        v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, new JsonSerializerOptions { IgnoreNullValues = true })
-                    );
-                b.Property(e => e.Location)
-                    .HasColumnType("geometry");
+                    .HasConversion(tagsConverter)
+                    .Metadata.SetValueComparer(tagsComparer);
 
+                b.Property(e => e.Location).HasColumnType("geometry");
                 b.HasMany(e => e.WayNodes).WithOne();
             });
 
@@ -54,10 +63,9 @@
             modelBuilder.Entity<Way>(b =>
             {
                 b.Property(e => e.Tags)
-                    .HasConversion(
-                        v => JsonSerializer.Serialize(v, new JsonSerializerOptions { IgnoreNullValues = true }),
-                        v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, new JsonSerializerOptions { IgnoreNullValues = true })
-                    );
+                    .HasConversion(tagsConverter)
+                    .Metadata.SetValueComparer(tagsComparer);
+
                 b.HasMany(e => e.WayNodes).WithOne();
             });
 
