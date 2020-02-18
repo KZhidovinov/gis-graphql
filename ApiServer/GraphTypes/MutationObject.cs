@@ -11,24 +11,25 @@ namespace GisApi.ApiServer.GraphTypes
     {
         public MutationObject(IDbContext dbContext)
         {
-            this.Field<NodeType>(
-                "createNode",
+            this.Field<ListGraphType<NodeType>>(
+                "node",
                 arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<NodeInputType>> { Name = "item" }),
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<NodeInputType>>>>
+                    { Name = "items", Description = "List of new nodes" }),
                 resolve: context =>
                 {
-                    var node = context.GetArgument<Node>("item");
-                    dbContext.Nodes.Add(node).Context.SaveChanges();
+                    var nodes = context.GetArgument<List<Node>>("items");
+                    dbContext.Nodes.UpdateRange(nodes);
+                    dbContext.SaveChanges();
 
-                    return node;
+                    return nodes;
                 });
 
             this.Field<ListGraphType<WayType>>(
                 "way",
                 arguments: new QueryArguments(
-                new QueryArgument<
-                NonNullGraphType<ListGraphType<NonNullGraphType<WayInputType>>>>
-                { Name = "items", Description = "List of new ways" }
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<WayInputType>>>>
+                    { Name = "items", Description = "List of new ways" }
                 ),
                 resolve: context =>
                 {

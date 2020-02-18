@@ -28,8 +28,8 @@ namespace GisApi.ApiServer.GraphTypes
             ValueConverter.Register(typeof(Dictionary<string, object>), typeof(GeoJSON.Geometry), DictToGeometry);
             this.RegisterValueConverter(new GeometryAstValueConverter());
 
-            Query = query;
-            Mutation = mutation;
+            this.Query = query;
+            this.Mutation = mutation;
         }
 
         private object DictToTags<TSourceValue>(object tagsInput)

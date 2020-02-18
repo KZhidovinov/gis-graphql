@@ -7,6 +7,7 @@
     {
         DbSet<Node> Nodes { get; set; }
         DbSet<Way> Ways { get; set; }
+        DbSet<WayNode> WayNodes { get; set; }
 
         void SaveChanges();
     }

@@ -10,6 +10,8 @@
             Name = "NodeInput";
             Description = "Input object to enter Node";
 
+            Field<IdGraphType>("id", "ID of the Node");
+
             Field<LongGraphType>("osmId", "OpenStreetMap ID if available");
 
             Field<TagsType>("tags", "Node tags as JSON object");

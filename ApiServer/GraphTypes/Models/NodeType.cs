@@ -1,29 +1,36 @@
 namespace GisApi.ApiServer.GraphTypes.Models
 {
+    using System.Collections.Generic;
     using GisApi.ApiServer.GraphTypes.Scalars;
     using GisApi.DataAccessLayer.Models;
+    using GisApi.DataAccessLayer.Repositories;
     using GraphQL.Types;
 
     public class NodeType : ObjectGraphType<Node>
     {
-        public NodeType()
+        public NodeType(IWayRepository wayRepository)
         {
-            Name = "Node";
+            this.Name = "Node";
+            this.Description = "Represents OpenStreetMap Node object";
 
-            Field(x => x.Id, type: typeof(IdGraphType))
+            this.Field(x => x.Id, type: typeof(IdGraphType))
                 .Description("The ID of the Node.");
 
-            Field(x => x.OsmId, type: typeof(LongGraphType))
+            this.Field(x => x.OsmId, type: typeof(LongGraphType))
                 .Description("The OSM ID of the Node.");
 
-            Field(x => x.Tags, type: typeof(TagsType))
+            this.Field(x => x.Tags, type: typeof(TagsType))
                 .Description("Tags of the Node.");
 
-            Field(x => x.Location, type: typeof(GeometryType))
+            this.Field(x => x.Location, type: typeof(GeometryType))
                 .Description("Location of the Node.");
 
-            Field(x => x.WayNodes, type: typeof(ListGraphType<WayNodeType>))
-                .Description("List of WayNode objects");
+            //Field(x => x.WayNodes, type: typeof(ListGraphType<WayNodeType>))
+            //    .Description("List of WayNode objects");
+
+            this.FieldAsync<ListGraphType<WayNodeType>, List<WayNode>>(
+                nameof(Node.WayNodes), @"List of related WayNode objects",
+                resolve: context => wayRepository.GetWayNodesAsync(context.Source, context.CancellationToken));
         }
     }
 }

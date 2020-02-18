@@ -10,6 +10,8 @@
             Name = "WayInput";
             Description = "Represents input object for Way";
 
+            Field<IdGraphType>("id", "ID of the Way");
+
             Field<LongGraphType>("osmId", "OpenStreetMap ID if available");
 
             Field<TagsType>("tags", "Way tags as JSON object");
