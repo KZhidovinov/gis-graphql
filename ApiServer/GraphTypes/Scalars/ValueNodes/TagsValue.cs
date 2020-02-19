@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
+namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
 {
     using GisApi.DataAccessLayer.Models;
     using GraphQL.Language.AST;

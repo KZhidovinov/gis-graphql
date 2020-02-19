@@ -1,5 +1,7 @@
-﻿namespace GisApi.DataAccessLayer
+namespace GisApi.DataAccessLayer
 {
+    using System.Threading;
+    using System.Threading.Tasks;
     using GisApi.DataAccessLayer.Models;
     using Microsoft.EntityFrameworkCore;
 
@@ -10,5 +12,7 @@
         DbSet<WayNode> WayNodes { get; set; }
 
         void SaveChanges();
+        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken token);
     }
 }

@@ -25,12 +25,9 @@ namespace GisApi.ApiServer.GraphTypes.Models
             this.Field(x => x.Location, type: typeof(GeometryType))
                 .Description("Location of the Node.");
 
-            //Field(x => x.WayNodes, type: typeof(ListGraphType<WayNodeType>))
-            //    .Description("List of WayNode objects");
-
             this.FieldAsync<ListGraphType<WayNodeType>, List<WayNode>>(
-                nameof(Node.WayNodes), @"List of related WayNode objects",
-                resolve: context => wayRepository.GetWayNodesAsync(context.Source, context.CancellationToken));
+                name: nameof(Node.WayNodes),
+                description: "List of related WayNode objects");
         }
     }
 }

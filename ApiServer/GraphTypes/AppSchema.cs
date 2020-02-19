@@ -13,19 +13,19 @@ namespace GisApi.ApiServer.GraphTypes
     {
         private readonly GeometryFactory geometryFactory;
 
-        public AppSchema(QueryObject query, MutationObject mutation, GeometryFactory geometryFactory)
+        public AppSchema(IServiceProvider serviceProvider, QueryObject query, MutationObject mutation, GeometryFactory geometryFactory) : base(serviceProvider)
         {
             this.geometryFactory = geometryFactory;
 
             // Tags converters
-            ValueConverter.Register(typeof(Dictionary<string, string>), typeof(TagsDictionary), DictToTags<string>);
-            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(TagsDictionary), DictToTags<object>);
+            ValueConverter.Register(typeof(Dictionary<string, string>), typeof(TagsDictionary), this.DictToTags<string>);
+            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(TagsDictionary), this.DictToTags<object>);
             this.RegisterValueConverter(new TagsAstValueConverter());
 
-            // Geometry.Point converters
-            ValueConverter.Register(typeof(Point), typeof(GeoJSON.Geometry), GeometryToGeoJSON);
-            ValueConverter.Register(typeof(GeoJSON.Geometry), typeof(Point), GeoJSONToGeometry);
-            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(GeoJSON.Geometry), DictToGeometry);
+            // GeoJSON.Geometry <-> Point converters
+            ValueConverter.Register(typeof(Point), typeof(GeoJSON.Geometry), this.GeometryToGeoJSON);
+            ValueConverter.Register(typeof(GeoJSON.Geometry), typeof(Point), this.GeoJSONToGeometry);
+            ValueConverter.Register(typeof(Dictionary<string, object>), typeof(GeoJSON.Geometry), this.DictToGeometry);
             this.RegisterValueConverter(new GeometryAstValueConverter());
 
             this.Query = query;
@@ -45,17 +45,18 @@ namespace GisApi.ApiServer.GraphTypes
 
         private object GeoJSONToGeometry(object geoJsonInput)
         {
-            if ((geoJsonInput is GeoJSON.Geometry geom)
-                && Enum.TryParse<OgcGeometryType>(geom.GeometryType, true, out OgcGeometryType geometryType))
+            if ((geoJsonInput is GeoJSON.Geometry geom) && Enum.TryParse(geom.GeometryType, true, out OgcGeometryType geometryType))
             {
+                // Input Coordinates should contain boxed numbers
+#pragma warning disable CA1305 // Specify IFormatProvider
                 switch (geometryType)
                 {
                     case OgcGeometryType.Point:
-                        return geometryFactory.CreatePoint(
+                        return this.geometryFactory.CreatePoint(
                             new Coordinate(Convert.ToDouble(geom.Coordinates[0]),
-                                           Convert.ToDouble(geom.Coordinates[1])));
+                                Convert.ToDouble(geom.Coordinates[1])));
                 }
-
+#pragma warning restore CA1305 // Specify IFormatProvider
             }
 
             return null;
@@ -86,15 +87,18 @@ namespace GisApi.ApiServer.GraphTypes
             if ((pointInput is Dictionary<string, object> dict)
                 && Enum.TryParse<OgcGeometryType>(dict["type"].ToString(), true, out OgcGeometryType geometryType))
             {
+                // Input Coordinates should contain boxed numbers
+#pragma warning disable CA1305 // Specify IFormatProvider
                 switch (geometryType)
                 {
                     case OgcGeometryType.Point:
                         var coords = dict["coordinates"] as IList<object>;
 
-                        return geometryFactory.CreatePoint(
+                        return this.geometryFactory.CreatePoint(
                             new Coordinate(Convert.ToDouble(coords[0]),
-                                           Convert.ToDouble(coords[1])));
+                                Convert.ToDouble(coords[1])));
                 }
+#pragma warning restore CA1305 // Specify IFormatProvider
             }
 
             return null;

@@ -1,46 +1,31 @@
-﻿namespace GisApi.ApiServer.GraphTypes
+namespace GisApi.ApiServer.GraphTypes
 {
-    using System.Linq;
+    using System.Collections.Generic;
     using GisApi.ApiServer.GraphTypes.Models;
-    using GisApi.DataAccessLayer;
+    using GisApi.DataAccessLayer.Models;
+    using GisApi.DataAccessLayer.Repositories;
     using GraphQL;
     using GraphQL.Types;
-    using Microsoft.EntityFrameworkCore;
 
     public class QueryObject : ObjectGraphType
     {
-        public QueryObject(IDbContext dbContext)
+        public QueryObject(IWayRepository wayRepository)
         {
-            this.Field<NodeType>(
-                "node",
+            this.FieldAsync<NodeType, Node>(
+                name: "node",
+                description: "Select first node",
                 arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "The ID of the Node." }),
-                resolve: context =>
-                {
-                    var id = context.GetArgument<int>("id");
-                    var node = dbContext.Nodes.FirstOrDefault(i => i.Id == id);
-                    return node;
-                });
+                resolve: context => wayRepository.GetNodeByIdAsync(context.GetArgument<long>("id")));
 
-            this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<NodeType>>>>(
-                "nodes",
-                resolve: context =>
-                {
-                    var nodes = dbContext.Nodes.AsNoTracking().ToList();
-                    return nodes;
-                });
+            this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<NodeType>>>, List<Node>>(
+                name: "nodes",
+                description: "All nodes",
+                resolve: context => wayRepository.GetNodesAsync(context.CancellationToken));
 
-            this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>>(
-                "ways",
-                resolve: context =>
-                {
-                    var ways = dbContext.Ways
-                        .Include(w => w.WayNodes)
-                        .ThenInclude(wn => wn.Node)
-                        .AsNoTracking()
-                        .ToList();
-
-                    return ways;
-                });
+            this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>, List<Way>>(
+                name: "ways",
+                description: "All ways",
+                resolve: context => wayRepository.GetWaysAsync(context.CancellationToken));
         }
     }
 }

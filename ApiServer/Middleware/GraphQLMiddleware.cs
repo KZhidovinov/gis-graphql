@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.Middleware
+namespace GisApi.ApiServer.Middleware
 {
     using System;
     using System.IO;
@@ -6,24 +6,26 @@
     using GraphQL;
     using GraphQL.NewtonsoftJson;
     using GraphQL.Types;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Hosting;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     public class GraphQLMiddleware
     {
-        private readonly RequestDelegate _next;
-        private readonly IDocumentWriter _writer;
-        private readonly IDocumentExecuter _executor;
+        private readonly RequestDelegate next;
+        private readonly IDocumentWriter writer;
+        private readonly IDocumentExecuter executor;
 
         public GraphQLMiddleware(RequestDelegate next, IDocumentWriter writer, IDocumentExecuter executor)
         {
-            _next = next;
-            _writer = writer;
-            _executor = executor;
+            this.next = next;
+            this.writer = writer;
+            this.executor = executor;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, ISchema schema)
+        public async Task InvokeAsync(HttpContext httpContext, ISchema schema, IHostEnvironment env)
         {
             if (httpContext.Request.Path.StartsWithSegments("/graphql", StringComparison.InvariantCultureIgnoreCase)
                 && string.Equals(httpContext.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
@@ -35,21 +37,25 @@
 
                     var request = JsonConvert.DeserializeObject<GraphQLRequest>(body);
 
-                    var result = await _executor.ExecuteAsync(doc =>
+                    var result = await this.executor.ExecuteAsync(doc =>
                     {
                         doc.Schema = schema;
                         doc.Query = request.Query;
                         doc.Inputs = request.Variables.ToInputs();
-                        doc.ExposeExceptions = true;
+
+                        if (env.IsDevelopment())
+                        {
+                            doc.ExposeExceptions = true;
+                        }
                     }).ConfigureAwait(false);
 
-                    var json = await _writer.WriteToStringAsync(result).ConfigureAwait(false);
+                    var json = await this.writer.WriteToStringAsync(result).ConfigureAwait(false);
                     await httpContext.Response.WriteAsync(json).ConfigureAwait(false);
                 }
             }
             else
             {
-                await _next(httpContext).ConfigureAwait(false);
+                await this.next(httpContext).ConfigureAwait(false);
             }
         }
     }

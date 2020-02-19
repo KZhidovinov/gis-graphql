@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes.Scalars
+namespace GisApi.ApiServer.GraphTypes.Scalars
 {
     using GisApi.ApiServer.GeoJSON;
     using GraphQL;
@@ -7,11 +7,11 @@
 
     public class GeometryType : ScalarGraphType
     {
-        public GeometryType() => Name = "Geometry";
+        public GeometryType() => this.Name = "Geometry";
 
         public override object ParseLiteral(IValue value)
         {
-            return ParseValue(value.Value);
+            return this.ParseValue(value?.Value);
         }
 
         public override object ParseValue(object value)

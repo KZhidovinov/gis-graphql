@@ -1,7 +1,9 @@
-﻿namespace GisApi.DataAccessLayer
+namespace GisApi.DataAccessLayer
 {
     using System.Linq;
     using System.Text.Json;
+    using System.Threading;
+    using System.Threading.Tasks;
     using GisApi.DataAccessLayer.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,8 +19,7 @@
         public virtual DbSet<WayNode> WayNodes { get; set; }
 
         public SqlServerDbContext() : base() { }
-        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options, IConfiguration configuration)
-            : base(options)
+        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options, IConfiguration configuration) : base(options)
         {
             this.Configuration = configuration;
         }
@@ -40,13 +41,13 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var tagsConverter = new ValueConverter<TagsDictionary, string>(
-                v => JsonSerializer.Serialize(v, new JsonSerializerOptions { IgnoreNullValues = true }),
-                v => JsonSerializer.Deserialize<TagsDictionary>(v, new JsonSerializerOptions { IgnoreNullValues = true }));
+                    v => JsonSerializer.Serialize(v, new JsonSerializerOptions { IgnoreNullValues = true }),
+                    v => JsonSerializer.Deserialize<TagsDictionary>(v, new JsonSerializerOptions { IgnoreNullValues = true }));
 
             var tagsComparer = new ValueComparer<TagsDictionary>(
                 (t1, t2) =>
-                    t1.All(p => t2.ContainsKey(p.Key) && p.Value.Equals(t2[p.Key])) &&
-                    t2.All(p => t1.ContainsKey(p.Key) && p.Value.Equals(t1[p.Key])),
+                t1.All(p => t2.ContainsKey(p.Key) && p.Value.Equals(t2[p.Key]))
+                && t2.All(p => t1.ContainsKey(p.Key) && p.Value.Equals(t1[p.Key])),
                 tags => tags.GetHashCode());
 
             modelBuilder.Entity<Node>(b =>
@@ -58,7 +59,6 @@
                 b.Property(e => e.Location).HasColumnType("geometry");
                 b.HasMany(e => e.WayNodes).WithOne();
             });
-
 
             modelBuilder.Entity<Way>(b =>
             {
@@ -87,6 +87,16 @@
         void IDbContext.SaveChanges()
         {
             this.SaveChanges();
+        }
+
+        async Task IDbContext.SaveChangesAsync()
+        {
+            await this.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        async Task IDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
     }

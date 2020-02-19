@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using NetTopologySuite.Geometries;
-
 namespace DataAccessLayer.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+    using NetTopologySuite.Geometries;
+
     public partial class InitialState : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

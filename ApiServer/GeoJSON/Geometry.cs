@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GeoJSON
+namespace GisApi.ApiServer.GeoJSON
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;

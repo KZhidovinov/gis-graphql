@@ -8,15 +8,19 @@ namespace GisApi.ApiServer.GraphTypes.Scalars
 
     public class TagsType : ScalarGraphType
     {
-        public TagsType() => Name = "Tags";
+        public TagsType() => this.Name = "Tags";
 
         public override object ParseLiteral(IValue value)
         {
             if (value is ObjectValue objectValue)
-                return ParseValue(objectValue.Value);
+            {
+                return this.ParseValue(objectValue.Value);
+            }
 
             if (value is TagsValue tagsValue)
-                return ParseValue(tagsValue.Value);
+            {
+                return this.ParseValue(tagsValue.Value);
+            }
 
             return null;
         }

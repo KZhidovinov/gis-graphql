@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes.Models
+namespace GisApi.ApiServer.GraphTypes.Models
 {
     using GraphQL.Types;
 
@@ -6,16 +6,16 @@
     {
         public WayNodeInputType()
         {
-            Name = "WayNodesInput";
-            Description = "Input object to enter data about Way - Node relation";
+            this.Name = "WayNodesInput";
+            this.Description = "Input object to enter data about Way - Node relation";
 
-            Field<IntGraphType>("wayIdx", "Index of Node in Way");
+            this.Field<IntGraphType>("wayIdx", "Index of Node in Way");
 
-            Field<StringGraphType>("role", "Role of the Node in the Way");
+            this.Field<StringGraphType>("role", "Role of the Node in the Way");
 
-            Field<WayInputType>("way", "Related Way object");
+            this.Field<WayInputType>("way", "Related Way object");
 
-            Field<NodeInputType>("node", "Related Node object");
+            this.Field<NodeInputType>("node", "Related Node object");
         }
     }
 }

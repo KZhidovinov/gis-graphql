@@ -2,40 +2,38 @@ namespace GisApi.ApiServer.GraphTypes
 {
     using System.Collections.Generic;
     using GisApi.ApiServer.GraphTypes.Models;
-    using GisApi.DataAccessLayer;
     using GisApi.DataAccessLayer.Models;
+    using GisApi.DataAccessLayer.Repositories;
     using GraphQL;
     using GraphQL.Types;
 
     public class MutationObject : ObjectGraphType
     {
-        public MutationObject(IDbContext dbContext)
+        public MutationObject(IWayRepository wayRepository)
         {
-            this.Field<ListGraphType<NodeType>>(
+            this.FieldAsync<ListGraphType<NodeType>, List<Node>>(
                 "node",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<NodeInputType>>>>
-                    { Name = "items", Description = "List of new nodes" }),
-                resolve: context =>
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<NodeInputType>>>> { Name = "items", Description = "List of new nodes" }),
+                resolve: async context =>
                 {
                     var nodes = context.GetArgument<List<Node>>("items");
-                    dbContext.Nodes.UpdateRange(nodes);
-                    dbContext.SaveChanges();
-
+                    await wayRepository.CreateOrUpdateNodesAsync(nodes, context.CancellationToken)
+                        .ConfigureAwait(false);
                     return nodes;
                 });
 
-            this.Field<ListGraphType<WayType>>(
+            this.FieldAsync<ListGraphType<WayType>, List<Way>>(
                 "way",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<WayInputType>>>>
-                    { Name = "items", Description = "List of new ways" }
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<WayInputType>>>> { Name = "items", Description = "List of new ways" }
                 ),
-                resolve: context =>
+                resolve: async context =>
                 {
                     var ways = context.GetArgument<List<Way>>("items");
-                    dbContext.Ways.UpdateRange(ways);
-                    dbContext.SaveChanges();
+
+                    await wayRepository.CreateOrUpdateWaysAsync(ways, context.CancellationToken)
+                        .ConfigureAwait(false);
 
                     return ways;
                 });

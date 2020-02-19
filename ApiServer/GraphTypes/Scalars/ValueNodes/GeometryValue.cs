@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
+namespace GisApi.ApiServer.GraphTypes.Scalars.ValueNodes
 {
     using GraphQL.Language.AST;
     using NetTopologySuite.Geometries;
@@ -7,12 +7,12 @@
     {
         public GeometryValue(Point value)
         {
-            Value = value;
+            this.Value = value;
         }
 
         protected override bool Equals(ValueNode<Point> node)
         {
-            return Value.Equals(node.Value);
+            return this.Value.Equals(node?.Value);
         }
     }
 }

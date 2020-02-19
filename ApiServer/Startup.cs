@@ -1,13 +1,10 @@
-﻿namespace GisApi.ApiServer
+namespace GisApi.ApiServer
 {
-    using GisApi.ApiServer.GraphTypes;
     using GisApi.ApiServer.Middleware;
     using GisApi.DataAccessLayer;
-    using GisApi.DataAccessLayer.Repositories;
     using GraphiQl;
     using GraphQL;
     using GraphQL.NewtonsoftJson;
-    using GraphQL.Types;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -18,39 +15,29 @@
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddSingleton(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 4326));
+        public void ConfigureServices(IServiceCollection services) => services
+            // Add GraphQL writers
+            .AddSingleton<IDocumentWriter, DocumentWriter>()
+            .AddSingleton<IDocumentExecuter, DocumentExecuter>()
+            // Initialize Geometry Factory
+            .AddSingleton(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 4326))
 
-            //services.AddSingleton<TagsType>();
+            .AddDbContext<IDbContext, SqlServerDbContext>()
 
-            services.AddDbContext<IDbContext, SqlServerDbContext>(ServiceLifetime.Scoped);
-            services.AddScoped<IWayRepository, WayRepository>();
-
-            services.AddScoped<QueryObject>();
-            services.AddScoped<MutationObject>();
-            services.AddScoped<ISchema, AppSchema>();
-        }
+            .AddRepositories()
+            .AddGraphTypes();
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.If(env.EnvironmentName == "Development", app => app.UseDeveloperExceptionPage());
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
-            app.UseGraphiQl("/graphiql", "/graphql");
-
-            app.UseMiddleware<GraphQLMiddleware>();
-        }
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
+            app.If(env.IsDevelopment(), app => app.UseDeveloperExceptionPage())
+            .UseDefaultFiles()
+            .UseStaticFiles()
+            .UseGraphiQl("/graphiql", "/graphql")
+            .UseMiddleware<GraphQLMiddleware>();
     }
 }

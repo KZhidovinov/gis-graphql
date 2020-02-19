@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer
+namespace GisApi.ApiServer
 {
     using System.IO;
     using System.Reflection;
@@ -16,37 +16,36 @@
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             new HostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureHostConfiguration(configurationBuilder => configurationBuilder.AddEnvironmentVariables(prefix: "DOTNET_"))
-                .ConfigureLogging(logger =>
-                    {
-                        logger.ClearProviders();
-                        logger.AddConsole();
-                    })
-                .ConfigureAppConfiguration((hostingContext, config) => config
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-                    .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json",
-                        optional: true, reloadOnChange: false)
-                    .If(
-                        hostingContext.HostingEnvironment.IsDevelopment(),
-                        builder => builder.AddUserSecrets(Assembly.GetExecutingAssembly(), optional: true))
-                    .AddEnvironmentVariables())
-                .UseDefaultServiceProvider((context, options) =>
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .ConfigureHostConfiguration(configurationBuilder => configurationBuilder.AddEnvironmentVariables(prefix: "DOTNET_"))
+            .ConfigureLogging(logger =>
+            {
+                logger.ClearProviders();
+                logger.AddConsole();
+            })
+            .ConfigureAppConfiguration((hostingContext, config) => config
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+                .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json",
+                    optional: true, reloadOnChange: false)
+                .If(hostingContext.HostingEnvironment.IsDevelopment(),
+                    builder => builder.AddUserSecrets(Assembly.GetExecutingAssembly(), optional: true))
+                .AddEnvironmentVariables())
+            .UseDefaultServiceProvider((context, options) =>
+            {
+                var isDevelopment = context.HostingEnvironment.IsDevelopment();
+                options.ValidateScopes = isDevelopment;
+                options.ValidateOnBuild = isDevelopment;
+            })
+            .ConfigureWebHost(webHostBuilder => webHostBuilder
+                .UseKestrel(kestrelOptions =>
                 {
-                    var isDevelopment = context.HostingEnvironment.IsDevelopment();
-                    options.ValidateScopes = isDevelopment;
-                    options.ValidateOnBuild = isDevelopment;
+                    kestrelOptions.AddServerHeader = false;
+                    kestrelOptions.AllowSynchronousIO = true;
                 })
-                .ConfigureWebHost(webHostBuilder => webHostBuilder
-                    .UseKestrel(kestrelOptions =>
-                    {
-                        kestrelOptions.AddServerHeader = false;
-                        kestrelOptions.AllowSynchronousIO = true;
-                    })
                 .UseIIS()
                 .ConfigureServices(services => services
                     .Configure<IISServerOptions>(config => config.AllowSynchronousIO = true))
                 .UseStartup<Startup>())
-                .UseConsoleLifetime();
+            .UseConsoleLifetime();
     }
 }

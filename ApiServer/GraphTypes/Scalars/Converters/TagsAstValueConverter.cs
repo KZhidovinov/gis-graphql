@@ -1,4 +1,4 @@
-﻿namespace GisApi.ApiServer.GraphTypes.Scalars.Converters
+namespace GisApi.ApiServer.GraphTypes.Scalars.Converters
 {
     using GisApi.ApiServer.GraphTypes.Scalars.ValueNodes;
     using GisApi.DataAccessLayer.Models;
