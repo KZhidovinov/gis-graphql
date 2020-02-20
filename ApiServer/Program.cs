@@ -40,11 +40,14 @@ namespace GisApi.ApiServer
                 .UseKestrel(kestrelOptions =>
                 {
                     kestrelOptions.AddServerHeader = false;
+                    // see Notes: https://github.com/graphql-dotnet/graphql-dotnet#installation
                     kestrelOptions.AllowSynchronousIO = true;
                 })
                 .UseIIS()
                 .ConfigureServices(services => services
-                    .Configure<IISServerOptions>(config => config.AllowSynchronousIO = true))
+                    .Configure<IISServerOptions>(config =>
+                        // see Notes: https://github.com/graphql-dotnet/graphql-dotnet#installation
+                        config.AllowSynchronousIO = true))
                 .UseStartup<Startup>())
             .UseConsoleLifetime();
     }

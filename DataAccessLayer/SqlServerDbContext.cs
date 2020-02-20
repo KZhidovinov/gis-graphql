@@ -45,9 +45,8 @@ namespace GisApi.DataAccessLayer
                     v => JsonSerializer.Deserialize<TagsDictionary>(v, new JsonSerializerOptions { IgnoreNullValues = true }));
 
             var tagsComparer = new ValueComparer<TagsDictionary>(
-                (t1, t2) =>
-                t1.All(p => t2.ContainsKey(p.Key) && p.Value.Equals(t2[p.Key]))
-                && t2.All(p => t1.ContainsKey(p.Key) && p.Value.Equals(t1[p.Key])),
+                (t1, t2) => t1.All(p => t2.ContainsKey(p.Key) && p.Value.Equals(t2[p.Key]))
+                    && t2.All(p => t1.ContainsKey(p.Key) && p.Value.Equals(t1[p.Key])),
                 tags => tags.GetHashCode());
 
             modelBuilder.Entity<Node>(b =>

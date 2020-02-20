@@ -25,13 +25,10 @@ namespace GisApi.ApiServer
             .AddSingleton<IDocumentExecuter, DocumentExecuter>()
             // Initialize Geometry Factory
             .AddGeometryFactory()
-
             .AddDbContext<IDbContext, SqlServerDbContext>()
-
             .AddRepositories()
             .AddGraphTypes();
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
             app.If(env.IsDevelopment(), app => app.UseDeveloperExceptionPage())
             .UseDefaultFiles()
