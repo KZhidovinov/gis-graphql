@@ -3,17 +3,16 @@ namespace GisApi.ApiServer.GraphTypes.Models
     using System.Collections.Generic;
     using GisApi.ApiServer.GraphTypes.Scalars;
     using GisApi.DataAccessLayer.Models;
-    using GisApi.DataAccessLayer.Repositories;
     using GraphQL.Types;
 
     public class NodeType : ObjectGraphType<Node>
     {
-        public NodeType(IWayRepository wayRepository)
+        public NodeType()
         {
             this.Name = "Node";
             this.Description = "Represents OpenStreetMap Node object";
 
-            this.Field(x => x.Id, type: typeof(IdGraphType))
+            this.Field(x => x.Id, type: typeof(LongGraphType))
                 .Description("The ID of the Node.");
 
             this.Field(x => x.OsmId, type: typeof(LongGraphType))

@@ -9,7 +9,6 @@ namespace GisApi.ApiServer
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using NetTopologySuite.Geometries;
 
     public class Startup
     {
@@ -25,7 +24,7 @@ namespace GisApi.ApiServer
             .AddSingleton<IDocumentWriter, DocumentWriter>()
             .AddSingleton<IDocumentExecuter, DocumentExecuter>()
             // Initialize Geometry Factory
-            .AddSingleton(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 4326))
+            .AddGeometryFactory()
 
             .AddDbContext<IDbContext, SqlServerDbContext>()
 

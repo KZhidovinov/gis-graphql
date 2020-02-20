@@ -35,16 +35,14 @@ namespace GisApi.DataAccessLayer.Repositories
                 .ConfigureAwait(false);
         }
 
-        public async Task<Node> GetNodeByIdAsync(long id)
-        {
-            return await this.dbContext.Nodes
+        public async Task<Node> GetNodeByIdAsync(long id) =>
+            await this.dbContext.Nodes
                 .Where(x => x.Id == id)
                 .Include(x => x.WayNodes)
                 .ThenInclude(x => x.Way)
                 .AsNoTracking()
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
-        }
 
         public async Task<List<Node>> GetNodesAsync(CancellationToken cancellationToken) =>
             await this.dbContext.Nodes

@@ -10,7 +10,6 @@ namespace GisApi.ApiServer.Middleware
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Hosting;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
 
     public class GraphQLMiddleware
     {
@@ -58,11 +57,5 @@ namespace GisApi.ApiServer.Middleware
                 await this.next(httpContext).ConfigureAwait(false);
             }
         }
-    }
-
-    public class GraphQLRequest
-    {
-        public string Query { get; set; }
-        public JObject Variables { get; set; }
     }
 }
