@@ -12,7 +12,7 @@ namespace GisApi.ApiServer.GraphTypes.Models
             this.Name = "Way";
             this.Description = "Way object";
 
-            this.Field(x => x.Id, type: typeof(IdGraphType))
+            this.Field(x => x.Id, type: typeof(LongGraphType))
                 .Description("The ID of the Way.");
 
             this.Field(x => x.OsmId, type: typeof(LongGraphType))
