@@ -31,8 +31,6 @@ namespace GisApi.ApiServer.Test
                 .AddGraphTypes();
 
             this.serviceProvider = services.BuildServiceProvider();
-
-
         }
 
         [Fact]

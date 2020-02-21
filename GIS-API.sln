@@ -3,18 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer", "ApiServer\ApiServer.csproj", "{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer", "Source\ApiServer\ApiServer.csproj", "{C3F965B6-86F9-4442-8109-F6C28B5C7BCC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{8D93DA3A-2904-4639-8EBD-E944B095E819}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "Source\DataAccessLayer\DataAccessLayer.csproj", "{8D93DA3A-2904-4639-8EBD-E944B095E819}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF2E37E3-50A8-4C8F-B783-E1B6218679BF}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiServer.Test", "ApiServer.Test\ApiServer.Test.csproj", "{F5CB1A90-9B8B-4443-A2EC-2662BB06202C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer.Test", "UnitTests\ApiServer.Test\ApiServer.Test.csproj", "{F5CB1A90-9B8B-4443-A2EC-2662BB06202C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D4AB043B-866C-4BE6-89ED-FFF99001C532}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{7FD482EC-1464-4842-8C49-56ABA3129732}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{3272A74F-5673-44AB-A3B1-F0D8DEC12EE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,7 +41,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F5CB1A90-9B8B-4443-A2EC-2662BB06202C} = {D4AB043B-866C-4BE6-89ED-FFF99001C532}
+		{C3F965B6-86F9-4442-8109-F6C28B5C7BCC} = {3272A74F-5673-44AB-A3B1-F0D8DEC12EE9}
+		{8D93DA3A-2904-4639-8EBD-E944B095E819} = {3272A74F-5673-44AB-A3B1-F0D8DEC12EE9}
+		{F5CB1A90-9B8B-4443-A2EC-2662BB06202C} = {7FD482EC-1464-4842-8C49-56ABA3129732}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D991F853-728C-456D-95F1-A92E7ED4DAF6}
