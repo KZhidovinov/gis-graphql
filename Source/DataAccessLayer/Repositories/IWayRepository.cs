@@ -4,7 +4,7 @@ namespace GisApi.DataAccessLayer.Repositories
     using System.Threading;
     using System.Threading.Tasks;
     using GisApi.DataAccessLayer.Models;
-    using NetTopologySuite.Geometries;
+    using NetTopologySuite.Features;
 
     public interface IWayRepository
     {
@@ -15,6 +15,6 @@ namespace GisApi.DataAccessLayer.Repositories
         Task<List<Way>> GetWaysAsync(CancellationToken cancellationToken);
         Task<Node> GetNodeByIdAsync(long id);
         Task<List<WayNode>> GetWayNodesAsync(Node source, CancellationToken cancellationToken);
-        Task<LineString> GetWayShape(Way way, CancellationToken cancellationToken);
+        Feature GetWayFeature(Way way);
     }
 }

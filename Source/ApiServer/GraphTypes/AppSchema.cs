@@ -7,6 +7,7 @@ namespace GisApi.ApiServer.GraphTypes
     using GisApi.DataAccessLayer.Models;
     using GraphQL;
     using GraphQL.Types;
+    using NetTopologySuite.Features;
     using NetTopologySuite.Geometries;
 
     public class AppSchema : Schema
@@ -28,8 +29,37 @@ namespace GisApi.ApiServer.GraphTypes
             ValueConverter.Register(typeof(Dictionary<string, object>), typeof(GeoJSON.Geometry), this.DictToGeometry);
             this.RegisterValueConverter(new GeometryAstValueConverter());
 
+            // GeoJSON.Feature <-> Feature converters
+            ValueConverter.Register(typeof(Feature), typeof(GeoJSON.Feature), this.FeatureToGeoJSON);
+            this.RegisterValueConverter(new FeatureAstValueConverter());
+
             this.Query = query;
             this.Mutation = mutation;
+        }
+
+        private object FeatureToGeoJSON(object featureInput)
+        {
+            if (featureInput is Feature feature)
+            {
+                var f = new GeoJSON.Feature
+                {
+                    Geometry = this.GeometryToGeoJSON(feature.Geometry) as GeoJSON.Geometry,
+                    ObjectType = "Feature",
+                    Properties = feature.Attributes.ToDictionary(),
+                    BoundingBox = feature.BoundingBox == null || feature.BoundingBox.IsNull
+                        ? null
+                        : new List<double> {
+                            feature.BoundingBox.MinX,
+                            feature.BoundingBox.MinY,
+                            feature.BoundingBox.MaxX,
+                            feature.BoundingBox.MaxY
+                        }
+                };
+
+                return f;
+            }
+
+            return null;
         }
 
         private object DictToTags<TSourceValue>(object tagsInput)
@@ -73,6 +103,12 @@ namespace GisApi.ApiServer.GraphTypes
                         {
                             GeometryType = geom.GeometryType,
                             Coordinates = new List<object> { geom.Coordinates[0].X, geom.Coordinates[0].Y }
+                        };
+                    case OgcGeometryType.LineString:
+                        return new GeoJSON.Geometry
+                        {
+                            GeometryType = geom.GeometryType,
+                            Coordinates = geom.Coordinates.Select(c => new List<object> { c.X, c.Y } as object).ToList()
                         };
                     default:
                         return null;

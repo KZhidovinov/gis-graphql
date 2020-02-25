@@ -16,6 +16,7 @@ namespace GisApi.ApiServer
             // Add custom scalars
             .AddScoped<TagsType>()
             .AddScoped<GeometryType>()
+            .AddScoped<FeatureType>()
             // Add Node types
             .AddScoped<NodeType>()
             .AddScoped<NodeInputType>()
