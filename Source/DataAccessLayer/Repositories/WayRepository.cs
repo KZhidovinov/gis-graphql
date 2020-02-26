@@ -6,18 +6,14 @@ namespace GisApi.DataAccessLayer.Repositories
     using System.Threading.Tasks;
     using GisApi.DataAccessLayer.Models;
     using Microsoft.EntityFrameworkCore;
-    using NetTopologySuite.Features;
-    using NetTopologySuite.Geometries;
 
     public class WayRepository : IWayRepository
     {
         private readonly IDbContext dbContext;
-        private readonly GeometryFactory geometryFactory;
 
-        public WayRepository(IDbContext dbContext, GeometryFactory geometryFactory)
+        public WayRepository(IDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.geometryFactory = geometryFactory;
         }
 
         public async Task CreateOrUpdateNodesAsync(IEnumerable<Node> nodes, CancellationToken cancellationToken)
@@ -79,25 +75,5 @@ namespace GisApi.DataAccessLayer.Repositories
                 .AsNoTracking()
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
-
-        public Feature GetWayFeature(Way way)
-        {
-            var points = this.dbContext.WayNodes
-                .Where(x => x.WayId == way.Id)
-                .OrderBy(x => x.WayIdx)
-                .Select(x => x.Node.Location.Coordinate)
-                .ToArray();
-
-            if (points.Length >= 2)
-            {
-                return new Feature(this.geometryFactory.CreateLineString(points),
-                    new AttributesTable(way.Tags?.Select(
-                        pair => KeyValuePair.Create(pair.Key, pair.Value as object)
-                        )
-                    ));
-            }
-
-            return null;
-        }
     }
 }

@@ -15,6 +15,5 @@ namespace GisApi.DataAccessLayer.Repositories
         Task<List<Way>> GetWaysAsync(CancellationToken cancellationToken, bool includeWayNodes = false, bool includeFeature = false);
         Task<Node> GetNodeByIdAsync(long id);
         Task<List<WayNode>> GetWayNodesAsync(Node source, CancellationToken cancellationToken);
-        Feature GetWayFeature(Way way);
     }
 }
