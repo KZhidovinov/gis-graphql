@@ -17,6 +17,7 @@ namespace GisApi.DataAccessLayer
         public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<Way> Ways { get; set; }
         public virtual DbSet<WayNode> WayNodes { get; set; }
+        public virtual DbSet<WayShape> WayShapes { get; set; }
 
         public SqlServerDbContext() : base() { }
         public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options, IConfiguration configuration) : base(options)
@@ -80,6 +81,15 @@ namespace GisApi.DataAccessLayer
                     .WithMany(n => n.WayNodes)
                     .HasForeignKey(wn => wn.NodeId)
                     .HasPrincipalKey(n => n.Id);
+            });
+
+            modelBuilder.Entity<WayShape>(b =>
+            {
+                // View receives WayId from Way.Id so it must be unique
+                b.ToView("WayShapes").HasKey(e => e.WayId);
+
+                b.HasOne(ws => ws.Way)
+                    .WithOne(w => w.WayShape);
             });
         }
 

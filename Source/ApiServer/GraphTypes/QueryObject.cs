@@ -25,7 +25,12 @@ namespace GisApi.ApiServer.GraphTypes
             this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>, List<Way>>(
                 name: "ways",
                 description: "All ways",
-                resolve: context => wayRepository.GetWaysAsync(context.CancellationToken));
+                resolve: context =>
+                    wayRepository.GetWaysAsync(context.CancellationToken,
+                        includeFeature: context.SubFields.ContainsKey("feature"),
+                        includeWayNodes: context.SubFields.ContainsKey("wayNodes")
+                    )
+            );
         }
     }
 }

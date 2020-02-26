@@ -2,13 +2,12 @@ namespace GisApi.ApiServer.GraphTypes.Models
 {
     using GisApi.ApiServer.GraphTypes.Scalars;
     using GisApi.DataAccessLayer.Models;
-    using GisApi.DataAccessLayer.Repositories;
     using GraphQL.Types;
     using NetTopologySuite.Features;
 
     public class WayType : ObjectGraphType<Way>
     {
-        public WayType(IWayRepository repository)
+        public WayType()
         {
             this.Name = "Way";
             this.Description = "Way object";
@@ -26,7 +25,8 @@ namespace GisApi.ApiServer.GraphTypes.Models
                 .Description("List of WayNodes linked with the Way.");
 
             this.Field<FeatureType, Feature>("feature")
-                .Resolve((ctx) => repository.GetWayFeature(ctx.Source));
+                // getter Feature uses WayShape navigation property so we should ensure that WayShape has been included
+                .Resolve((ctx) => ctx.Source.Feature);
         }
     }
 }

@@ -69,13 +69,16 @@ namespace GisApi.DataAccessLayer.Repositories
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        public async Task<List<Way>> GetWaysAsync(CancellationToken cancellationToken) =>
-            await this.dbContext.Ways
-            .Include(w => w.WayNodes)
-            .ThenInclude(wn => wn.Node)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+        public async Task<List<Way>> GetWaysAsync(CancellationToken cancellationToken,
+            bool includeWayNodes = false, bool includeFeature = false) =>
+            await this.dbContext.Ways.AsQueryable()
+                // include WayShape to be accessible from Feature getter
+                .If(includeFeature, x => x.Include(w => w.WayShape))
+                .If(includeWayNodes, x => x.Include(w => w.WayNodes)
+                                        .ThenInclude(wn => wn.Node))
+                .AsNoTracking()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
         public Feature GetWayFeature(Way way)
         {
