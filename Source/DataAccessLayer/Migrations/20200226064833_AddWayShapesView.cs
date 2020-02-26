@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DataAccessLayer.Migrations
+namespace GisApi.DataAccessLayer.Migrations
 {
     public partial class AddWayShapesView : Migration
     {
@@ -36,8 +36,8 @@ WITH data AS (
         COUNT(d.point) > 1
 )
 SELECT
-    g.Id,
-    geometry :: STGeomFromText('LINESTRING(' + g.wkt + ')', 4326) AS shape
+    g.Id as WayId,
+    geometry :: STGeomFromText('LINESTRING(' + g.wkt + ')', 4326) AS Shape
 FROM
     data g;
 ");

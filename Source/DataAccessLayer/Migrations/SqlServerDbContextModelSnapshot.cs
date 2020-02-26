@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
-namespace DataAccessLayer.Migrations
+namespace GisApi.DataAccessLayer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
     partial class SqlServerDbContextModelSnapshot : ModelSnapshot

@@ -1,4 +1,4 @@
-namespace DataAccessLayer.Migrations
+namespace GisApi.DataAccessLayer.Migrations
 {
     using Microsoft.EntityFrameworkCore.Migrations;
     using NetTopologySuite.Geometries;

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
-namespace DataAccessLayer.Migrations
+namespace GisApi.DataAccessLayer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
     [Migration("20200226064833_AddWayShapesView")]
