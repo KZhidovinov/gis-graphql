@@ -25,6 +25,7 @@ namespace GisApi.ApiServer.GraphTypes.Models
                 .Description("List of WayNodes linked with the Way.");
 
             this.Field<FeatureType, Feature>("feature")
+                .Description("GeoJSON Feature object (Read-only)")
                 // getter Feature uses WayShape navigation property so we should ensure that WayShape has been included
                 .Resolve((ctx) => ctx.Source.Feature);
         }
