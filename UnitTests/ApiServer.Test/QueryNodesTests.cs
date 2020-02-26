@@ -163,7 +163,7 @@ namespace GisApi.ApiServer.Test
                 new Node { Id = 2, WayNodes = new List<WayNode>{ new WayNode { Way = way } } }
             };
 
-            this.repository.GetNodesAsync(Arg.Any<CancellationToken>()).Returns(nodes);
+            this.repository.GetNodesAsync(Arg.Any<CancellationToken>(), includeWayNodes: true).Returns(nodes);
 
             var expectedJson = "{\"nodes\":[{\"wayNodes\":[{\"way\":{\"id\":5}}]},{\"wayNodes\":[{\"way\":{\"id\":5}}]}]}";
 
@@ -189,7 +189,7 @@ namespace GisApi.ApiServer.Test
         {
             // Arrange
             var node = new Node { Id = 1, OsmId = long.MaxValue };
-            this.repository.GetNodeByIdAsync(node.Id).Returns(node);
+            this.repository.GetNodeByIdAsync(node.Id, Arg.Any<CancellationToken>()).Returns(node);
             var expectedJson = "{\"node\":{\"id\":1,\"osmId\":9223372036854775807}}";
 
             // Act
@@ -214,7 +214,7 @@ namespace GisApi.ApiServer.Test
         {
             // Arrange
             var node = new Node { Id = 1, OsmId = long.MaxValue };
-            this.repository.GetNodeByIdAsync(node.Id).Returns(node);
+            this.repository.GetNodeByIdAsync(node.Id, Arg.Any<CancellationToken>()).Returns(node);
             var expectedJson = "{\"node\":{\"id\":1,\"osmId\":9223372036854775807}}";
 
             // Act

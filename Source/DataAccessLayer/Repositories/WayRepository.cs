@@ -32,38 +32,22 @@ namespace GisApi.DataAccessLayer.Repositories
                 .ConfigureAwait(false);
         }
 
-        public async Task<Node> GetNodeByIdAsync(long id) =>
+        public async Task<Node> GetNodeByIdAsync(long id, CancellationToken cancellationToken, bool includeWayNodes = false) =>
             await this.dbContext.Nodes
-                .Where(x => x.Id == id)
-                .Include(x => x.WayNodes)
-                .ThenInclude(x => x.Way)
+                .Where(x => x.Id == id).AsQueryable()
+                .If(includeWayNodes, x => x.Include(w => w.WayNodes)
+                                        .ThenInclude(wn => wn.Node))
                 .AsNoTracking()
-                .FirstOrDefaultAsync()
+                .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-        public async Task<List<Node>> GetNodesAsync(CancellationToken cancellationToken) =>
-            await this.dbContext.Nodes
-            .Include(x => x.WayNodes)
-            .ThenInclude(x => x.Way)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        public async Task<List<Node>> GetNodesAsync(Way way, CancellationToken cancellationToken) =>
-            await this.dbContext.WayNodes
-            .Where(x => x.WayId == way.Id)
-            .OrderBy(x => x.WayIdx)
-            .Select(x => x.Node)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        public async Task<List<WayNode>> GetWayNodesAsync(Node node, CancellationToken cancellationToken) =>
-            await this.dbContext.WayNodes
-            .Where(x => x.NodeId == node.Id)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+        public async Task<List<Node>> GetNodesAsync(CancellationToken cancellationToken, bool includeWayNodes = false) =>
+            await this.dbContext.Nodes.AsQueryable()
+                .If(includeWayNodes, x => x.Include(w => w.WayNodes)
+                                        .ThenInclude(wn => wn.Node))
+                .AsNoTracking()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
         public async Task<List<Way>> GetWaysAsync(CancellationToken cancellationToken,
             bool includeWayNodes = false, bool includeFeature = false) =>

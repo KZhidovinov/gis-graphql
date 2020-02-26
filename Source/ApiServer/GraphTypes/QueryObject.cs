@@ -15,12 +15,20 @@ namespace GisApi.ApiServer.GraphTypes
                 name: "node",
                 description: "Select first node",
                 arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "id", Description = "The ID of the Node." }),
-                resolve: context => wayRepository.GetNodeByIdAsync(context.GetArgument<long>("id")));
+                resolve: context =>
+                    wayRepository.GetNodeByIdAsync(context.GetArgument<long>("id"), context.CancellationToken,
+                        includeWayNodes: context.SubFields.ContainsKey("wayNodes")
+                    )
+            );
 
             this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<NodeType>>>, List<Node>>(
                 name: "nodes",
                 description: "All nodes",
-                resolve: context => wayRepository.GetNodesAsync(context.CancellationToken));
+                resolve: context =>
+                    wayRepository.GetNodesAsync(context.CancellationToken,
+                        includeWayNodes: context.SubFields.ContainsKey("wayNodes")
+                    )
+            );
 
             this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<WayType>>>, List<Way>>(
                 name: "ways",
