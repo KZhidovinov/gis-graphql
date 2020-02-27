@@ -9,30 +9,23 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   targetFramework: 'netcoreapp3.1'
-  outputFolder: 'out'
 
 steps:
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'restore'
-#     feedsToUse: 'config'
-#     nugetConfigPath: 'nuget.config'
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'build'
-#     arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
 - task: DotNetCoreCLI@2
+  name: Restore
+  inputs:
+    command: 'restore'
+    feedsToUse: 'config'
+    nugetConfigPath: 'nuget.config'
+- task: DotNetCoreCLI@2
+  name: Build
+  inputs:
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration) --framework $(targetFramework)'
+- task: DotNetCoreCLI@2
+  name: Publish
   inputs:
     command: 'publish'
-    feedsToUse: config
-    nugetConfigPath: 'nuget.config'
     publishWebProjects: true
+    nobuild: true
     arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-    verbose: true
