@@ -12,18 +12,20 @@ variables:
   outputFolder: 'out'
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    feedsToUse: 'config'
-    nugetConfigPath: 'nuget.config'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'restore'
+#     feedsToUse: 'config'
+#     nugetConfigPath: 'nuget.config'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'build'
+#     arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
+    feedsToUse: config
+    nugetConfigPath: 'nuget.config'
     publishWebProjects: true
     arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
 - task: ArchiveFiles@2
