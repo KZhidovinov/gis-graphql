@@ -20,12 +20,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    arguments: '--config $(buildConfiguration) --framework $(targetFramework)'
+    arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--config $(buildConfiguration) --framework $(targetFramework)'
+    arguments: '--configuration $(buildConfiguration) --framework $(targetFramework)'
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
