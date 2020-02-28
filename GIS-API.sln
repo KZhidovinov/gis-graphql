@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer.Test", "UnitTests\ApiServer.Test\ApiServer.Test.csproj", "{F5CB1A90-9B8B-4443-A2EC-2662BB06202C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer.Tests", "UnitTests\ApiServer.Tests\ApiServer.Tests.csproj", "{F5CB1A90-9B8B-4443-A2EC-2662BB06202C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{7FD482EC-1464-4842-8C49-56ABA3129732}"
 EndProject
