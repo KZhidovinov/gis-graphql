@@ -20,6 +20,7 @@ namespace GisApi.ApiServer
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) => services
+            .AddApplicationInsightsTelemetry()
             // Add GraphQL writers
             .AddSingleton<IDocumentWriter, DocumentWriter>()
             .AddSingleton<IDocumentExecuter, DocumentExecuter>()
