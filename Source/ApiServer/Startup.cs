@@ -7,6 +7,7 @@ namespace GisApi.ApiServer
     using GraphQL.NewtonsoftJson;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Rewrite;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -35,6 +36,8 @@ namespace GisApi.ApiServer
             .UseDefaultFiles()
             .UseStaticFiles()
             .UseGraphiQl("/graphiql", "/graphql")
+            // ToDo: remove line below when root route is ready
+            .UseRewriter(new RewriteOptions().AddRedirect("^$", "/graphiql"))
             .UseMiddleware<GraphQLMiddleware>();
     }
 }
