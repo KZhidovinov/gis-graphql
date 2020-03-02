@@ -10,7 +10,7 @@ COPY . .
 
 RUN dotnet restore --configfile nuget.config --verbosity normal
 RUN dotnet build --no-restore --configuration ${Configuration} --verbosity normal
-RUN dotnet test --configuration ${Configuration} --no-build --verbosity normal
+# RUN dotnet test --configuration ${Configuration} --no-build --verbosity normal
 RUN dotnet publish "Source/ApiServer/ApiServer.csproj" --configuration ${Configuration} --no-build --output /app --verbosity normal
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS runtime
