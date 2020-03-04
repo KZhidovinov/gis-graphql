@@ -17,7 +17,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'printenv'
-        sh 'cd /src && dotnet build --no-restore --configuration $(CONFIGURATION) --verbosity normal'
+        sh 'cd /src && dotnet build --no-restore --configuration $CONFIGURATION --verbosity normal'
       }
     }
 
