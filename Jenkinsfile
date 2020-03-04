@@ -23,6 +23,4 @@ pipeline{
         sh 'dotnet test -c Release'
       }
     }
-
-  }
 }
