@@ -17,10 +17,4 @@ pipeline{
             }
         }
     }
-
-    stage('Tests') {
-      steps {
-        sh 'dotnet test -c Release'
-      }
-    }
 }
